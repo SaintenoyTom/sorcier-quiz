@@ -79,7 +79,9 @@ jobs:
       - name: Build APK (Expo EAS)
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx eas build --platform android --profile preview --non-interactive
+        run: |
+          npm install --legacy-peer-deps
+          npx eas build --platform android --profile preview --non-interactive
       - name: Build E2E (Detox)
         run: npx detox build -c android.emu.release --artifacts-location . --config-path ./detox.config.js
       - name: Run E2E (Detox)
