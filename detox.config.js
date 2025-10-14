@@ -1,7 +1,10 @@
 module.exports = {
-  testRunner: 'jest',
-  runnerConfig: 'e2e/config.json',
-  specs: 'e2e',
+  apps: {
+    'android.release': {
+      type: 'android.apk',
+      binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
+    }
+  },
   configurations: {
     'android.emu.release': {
       device: {
@@ -9,7 +12,7 @@ module.exports = {
         type: 'android.emulator',
         apiLevel: 30
       },
-      app: 'android/app/build/outputs/apk/release/app-release.apk'
+      app: 'android.release'
     }
   }
 };
