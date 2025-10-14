@@ -31,6 +31,14 @@ module.exports = [
     }
   },
   {
+    files: ['**/*.js'],
+    languageOptions: {
+      parser: require('eslint/parser'),
+      ecmaVersion: 2021,
+      sourceType: 'module'
+    }
+  },
+  {
     files: ['**/__tests__/**', '*.spec.*'],
     rules: {
       'no-undef': 'off',
