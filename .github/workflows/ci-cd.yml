@@ -76,25 +76,6 @@ jobs:
         run: npm ci --legacy-peer-deps
       - name: Build APK (Expo EAS)
         run: npx eas build --platform android --profile preview --non-interactive
-          # Copie l'APK généré vers app-release.apk
-          find android/app/build/outputs/apk/release -name '*.apk' -exec cp {} app-release.apk \;
-      - name: Setup Java (Android)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Install Android SDK
-        run: |
-          sudo apt-get update && sudo apt-get install -y wget unzip
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          mkdir -p $HOME/android-sdk/cmdline-tools/latest
-          unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools/latest
-          mv $HOME/android-sdk/cmdline-tools/latest/cmdline-tools/* $HOME/android-sdk/cmdline-tools/latest/
-          export ANDROID_HOME=$HOME/android-sdk
-          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "emulator" "system-images;android-30;google_apis;x86_64"
-          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" --device "pixel"
       - name: Build E2E (Detox)
         run: npx detox build -c android.emu.release --artifacts-location . --config-path ./detox.config.js
       - name: Run E2E (Detox)
