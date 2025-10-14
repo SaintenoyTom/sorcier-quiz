@@ -74,25 +74,13 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-      - name: Install Expo CLI & EAS CLI
-        run: npm install -g expo-cli eas-cli
-      - name: Générer APK Expo (EAS Build)
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+      - name: Générer APK Expo (expo run:android)
         run: |
-          eas build -p android --profile preview --non-interactive > build-log.txt
-          BUILD_URL=$(cat build-log.txt | grep 'https://expo.dev/accounts/' | tail -1 | awk '{print $NF}')
-          echo "Build URL: $BUILD_URL"
-          STATUS_URL="$BUILD_URL"
-          # Attendre la fin du build et récupérer l'URL de l'APK
-          for i in {1..30}; do
-            APK_URL=$(eas build:inspect --json --build-id $(basename $BUILD_URL) | grep -o 'https://.*\.apk' | head -1)
-            if [ -n "$APK_URL" ]; then break; fi
-            sleep 20
-          done
-          if [ -z "$APK_URL" ]; then echo "APK non trouvé"; exit 1; fi
-          echo "APK URL: $APK_URL"
-          curl -L "$APK_URL" -o app-release.apk
+          expo run:android --variant release
+          # Copie l'APK généré vers app-release.apk
+          find . -name '*.apk' -exec cp {} app-release.apk \;
       - name: Setup Java (Android)
         uses: actions/setup-java@v4
         with:
