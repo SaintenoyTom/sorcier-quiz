@@ -27,6 +27,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "131ee38b-85cd-4690-b593-855a0bb1406f"
+      }
+    },
+    "owner": "deltasup1"
   }
 }
