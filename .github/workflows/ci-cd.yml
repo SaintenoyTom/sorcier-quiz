@@ -77,6 +77,8 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
       - name: Build APK (Expo EAS)
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: npx eas build --platform android --profile preview --non-interactive
       - name: Build E2E (Detox)
         run: npx detox build -c android.emu.release --artifacts-location . --config-path ./detox.config.js
