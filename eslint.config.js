@@ -1,8 +1,4 @@
 // ESLint v9+ configuration (remplace .eslintrc.json)
-const airbnb = require('eslint-config-airbnb');
-const airbnbHooks = require('eslint-config-airbnb/hooks');
-const tsRecommended = require('@typescript-eslint/eslint-plugin').configs.recommended;
-
 module.exports = [
   {
     ignores: [
@@ -13,11 +9,11 @@ module.exports = [
       'android/',
       'ios/'
     ],
-  },
-  ...airbnb,
-  ...airbnbHooks,
-  ...tsRecommended,
-  {
+    extends: [
+      'airbnb',
+      'airbnb/hooks',
+      'plugin:@typescript-eslint/recommended'
+    ],
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin')
     },
