@@ -6,7 +6,9 @@
     "preview": {
       "android": {
         "buildType": "apk",
-        "node": "npm install --legacy-peer-deps"
+        "hooks": {
+          "pre-install": "npm install --legacy-peer-deps"
+        }
       }
     }
   }
