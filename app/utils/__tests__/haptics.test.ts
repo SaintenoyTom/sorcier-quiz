@@ -19,6 +19,15 @@ describe('feedback', () => {
     spy.mockRestore();
   });
 });
+jest.mock('expo-haptics', () => ({
+  impactAsync: jest.fn(),
+  notificationAsync: jest.fn(),
+  selectionAsync: jest.fn(),
+  NotificationFeedbackType: {
+    Success: 'success',
+    Error: 'error'
+  }
+}));
 import * as Haptics from 'expo-haptics';
 import { triggerHaptic } from '../haptics';
 

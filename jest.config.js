@@ -6,8 +6,11 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['lcov', 'text'],
+  transform: {
+    '^.+\\.[jt]sx?$': 'babel-jest'
+  },
   transformIgnorePatterns: [
-    'node_modules/(?!(expo-haptics|expo-modules-core)/)'
+    'node_modules/(?!(expo-haptics|expo-modules-core|react-native|@react-native|@react-native-community)/)'
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
 };

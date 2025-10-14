@@ -1,13 +1,17 @@
 module.exports = function(api) {
-  api.cache(true);
-  const presets = ['babel-preset-expo'];
-  const plugins = [];
-
-  // Désactive le plugin reanimated pour les tests
-  if (process.env.JEST_WORKER_ID) {
-    return { presets, plugins };
+  const isTest = api.env && api.env('test');
+  if (isTest) {
+    api.cache(false);
+    return {
+      presets: ['babel-preset-expo'],
+      plugins: []
+    };
   }
-
-  plugins.push('react-native-reanimated/plugin');
-  return { presets, plugins };
+  api.cache(true);
+  return {
+    presets: ['babel-preset-expo'],
+    plugins: [
+      'react-native-reanimated/plugin'
+    ]
+  };
 };
