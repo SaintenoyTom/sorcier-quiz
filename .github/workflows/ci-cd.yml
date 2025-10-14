@@ -30,6 +30,13 @@ jobs:
         run: npm ci --legacy-peer-deps
       - name: Run ESLint (Airbnb)
         run: npm run lint
+      - name: Générer rapport ESLint
+        run: npx eslint . --max-warnings=0 -f json -o eslint-report.json
+      - name: Upload rapport ESLint
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-report
+          path: eslint-report.json
       - name: Résumé Lint
         run: echo "## Résultat Lint" >> $GITHUB_STEP_SUMMARY
 
