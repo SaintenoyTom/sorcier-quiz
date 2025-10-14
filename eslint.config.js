@@ -11,7 +11,7 @@ module.exports = [
   '*.config.js',
   'coverage/**/*.js',
   'app/utils/scoring.js',
-  'coverage/*.js'
+  'coverage/**'
     ],
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
