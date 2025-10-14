@@ -8,6 +8,20 @@ import { HistoryScreen } from './app/screens/HistoryScreen';
 import { SettingsScreen } from './app/screens/SettingsScreen';
 import { getSystemTheme, lightTheme, darkTheme } from './app/theme';
 import { StatusBar } from 'expo-status-bar';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: '<A REMPLACER>',
+  authDomain: '<A REMPLACER>',
+  projectId: '<A REMPLACER>',
+  storageBucket: '<A REMPLACER>',
+  messagingSenderId: '<A REMPLACER>',
+  appId: '<A REMPLACER>'
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 const Stack = createStackNavigator();
 

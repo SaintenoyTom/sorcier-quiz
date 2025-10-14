@@ -158,32 +158,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      # Option A: Registry + K8s
-      - name: Login Registry
-        if: secrets.REGISTRY_USERNAME && secrets.REGISTRY_PASSWORD
-        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-      - name: Push Docker Image
-        run: |
-          docker tag ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:${{ github.sha }} ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:latest
-          docker push ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:latest
-      - name: Deploy K8s
-        if: secrets.KUBE_CONFIG
-        run: |
-          echo "$KUBE_CONFIG" > kubeconfig.yaml
-          kubectl --kubeconfig=kubeconfig.yaml apply -f k8s/deployment.yaml
-      # Option B: Firebase App Distribution
-      - name: Deploy Firebase
+      # Déploiement via Firebase App Distribution
+      # Remplacez <APP_ID> par l'identifiant de votre app Firebase
+      - name: Installer Firebase CLI
+        run: npm install -g firebase-tools
+      - name: Déployer sur Firebase App Distribution
         if: secrets.FIREBASE_TOKEN
         run: |
-          firebase appdistribution:distribute android/app/build/outputs/bundle/release/app-release.aab --app <APP_ID> --token ${{ secrets.FIREBASE_TOKEN }}
-      # Option C: SSH/VM
-      - name: Deploy via SSH
-        if: secrets.SSH_PRIVATE_KEY
-        run: |
-          echo "$SSH_PRIVATE_KEY" > key.pem
-          chmod 600 key.pem
-          scp -i key.pem android/app/build/outputs/bundle/release/app-release.aab user@host:/deploy/path/
-          ssh -i key.pem user@host 'docker restart my-app'
+          firebase appdistribution:distribute android/app/build/outputs/bundle/release/app-release.aab --app 1:956503401377:android:860aed9b77e38c4477a1e0 --token ${{ secrets.FIREBASE_TOKEN }}
       - name: Résumé Déploiement
-        run: echo "## Déploiement terminé" >> $GITHUB_STEP_SUMMARY
+        run: echo "## Déploiement Firebase terminé" >> $GITHUB_STEP_SUMMARY
