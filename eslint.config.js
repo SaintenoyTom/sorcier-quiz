@@ -11,7 +11,8 @@ module.exports = [
     ],
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
-      'react': require('eslint-plugin-react')
+      'react': require('eslint-plugin-react'),
+      'import': require('eslint-plugin-import')
     },
     languageOptions: {
       parser: require('@typescript-eslint/parser'),
