@@ -8,8 +8,10 @@ module.exports = [
       'coverage/',
       'android/',
       'ios/',
-      '*.config.js',
-      'coverage/**/*.js'
+  '*.config.js',
+  'coverage/**/*.js',
+  'app/utils/scoring.js',
+  'coverage/*.js'
     ],
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
