@@ -6,12 +6,7 @@
     "preview": {
       "android": {
         "buildType": "apk",
-        "node": {
-          "yarn": false,
-          "npm": {
-            "installCommand": "npm install --legacy-peer-deps"
-          }
-        }
+        "node": "npm install --legacy-peer-deps"
       }
     }
   }
