@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "text": "Face à un défi imprévu, tu…",
+    "options": [
+      { "id": "A", "text": "Agis tout de suite, quitte à improviser", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Analyses et cherches une règle ou recette", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Observes en silence avant d’intervenir", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Établis un plan, puis exécutes l’étape 1", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 2,
+    "text": "Quand tu dois apprendre une nouvelle compétence magique, tu…",
+    "options": [
+      { "id": "A", "text": "Expérimentes sans attendre", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Lis tous les grimoires disponibles", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Écoutes les conseils des anciens", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Planifies un programme d’entraînement", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 3,
+    "text": "En équipe, ton rôle naturel est…",
+    "options": [
+      { "id": "A", "text": "Motiver et lancer l’action", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Organiser et structurer les tâches", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Observer et anticiper les problèmes", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Gérer le temps et les priorités", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 4,
+    "text": "Face à un échec, tu…",
+    "options": [
+      { "id": "A", "text": "Rebondis immédiatement", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Analyses ce qui n’a pas fonctionné", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Prends du recul et observes", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Prépares une nouvelle stratégie", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 5,
+    "text": "Pour résoudre une énigme complexe, tu…",
+    "options": [
+      { "id": "A", "text": "Tentes plusieurs solutions rapidement", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Décomposes le problème méthodiquement", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Cherches des indices cachés", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Prends le temps d’analyser chaque étape", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 6,
+    "text": "Ta gestion du temps ressemble à…",
+    "options": [
+      { "id": "A", "text": "Tout faire vite, quitte à bâcler", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Planifier chaque minute", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Attendre le bon moment pour agir", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Prendre le temps d’anticiper", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 7,
+    "text": "Quand tu rencontres un obstacle, tu…",
+    "options": [
+      { "id": "A", "text": "Le contournes sans hésiter", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Cherches une solution logique", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Restes discret et observes", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Évalues toutes les options avant d’agir", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 8,
+    "text": "Ta façon de prendre des décisions est…",
+    "options": [
+      { "id": "A", "text": "Spontanée et instinctive", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Basée sur des faits et des preuves", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Guidée par l’intuition", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Réfléchie et planifiée", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 9,
+    "text": "En cas de conflit, tu…",
+    "options": [
+      { "id": "A", "text": "Exprimes ton point de vue sans détour", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Tentes de trouver un compromis logique", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Préfères éviter l’affrontement", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Prends du recul pour analyser la situation", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 10,
+    "text": "Pour progresser, tu préfères…",
+    "options": [
+      { "id": "A", "text": "Multiplier les expériences", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Étudier et comprendre les principes", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Observer les autres et apprendre d’eux", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Prendre le temps de maîtriser chaque étape", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 11,
+    "text": "Ta relation au risque est…",
+    "options": [
+      { "id": "A", "text": "Prendre des risques calculés", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Éviter les risques inutiles", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Agir discrètement pour limiter les dangers", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Planifier pour anticiper les imprévus", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 12,
+    "text": "Quand tu dois choisir un artefact, tu…",
+    "options": [
+      { "id": "A", "text": "Prends celui qui t’attire le plus", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Analyses ses propriétés", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Cherches un objet rare et discret", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Choisis selon l’utilité à long terme", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 13,
+    "text": "Ta plus grande qualité de sorcier·ère est…",
+    "options": [
+      { "id": "A", "text": "L’énergie et la passion", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "La logique et la méthode", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "L’intuition et la discrétion", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "La patience et la planification", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 14,
+    "text": "Pour toi, la magie est avant tout…",
+    "options": [
+      { "id": "A", "text": "Un moyen d’agir sur le monde", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Un art de transformer la matière", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Un secret à percer", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Un équilibre à préserver", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 15,
+    "text": "Ta plus grande crainte en magie est…",
+    "options": [
+      { "id": "A", "text": "Perdre le contrôle", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Rater une formule", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Être découvert à tort", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Manquer de temps pour agir", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 16,
+    "text": "Pour toi, la réussite passe par…",
+    "options": [
+      { "id": "A", "text": "L’action immédiate", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "La préparation minutieuse", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "L’observation attentive", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "La gestion du temps", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 17,
+    "text": "Quand tu dois choisir un partenaire, tu préfères…",
+    "options": [
+      { "id": "A", "text": "Quelqu’un de dynamique", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Quelqu’un de méthodique", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Quelqu’un de discret", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Quelqu’un de patient", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 18,
+    "text": "Ta façon de gérer les ressources est…",
+    "options": [
+      { "id": "A", "text": "Utiliser tout ce que tu as sous la main", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Optimiser chaque ingrédient", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Garder des réserves pour plus tard", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Planifier l’utilisation sur la durée", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 19,
+    "text": "Quand tu dois faire un choix difficile, tu…",
+    "options": [
+      { "id": "A", "text": "Suis ton instinct", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Pèses le pour et le contre", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Cherches une solution discrète", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Prends le temps de réfléchir", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  },
+  {
+    "id": 20,
+    "text": "Pour toi, la réussite ultime c’est…",
+    "options": [
+      { "id": "A", "text": "Vivre intensément chaque instant", "weights": { "Elementaliste": 2, "Alchimiste": 0, "Ombromancien": 1, "Chronomancien": 0 } },
+      { "id": "B", "text": "Découvrir tous les secrets du monde", "weights": { "Elementaliste": 0, "Alchimiste": 2, "Ombromancien": 0, "Chronomancien": 1 } },
+      { "id": "C", "text": "Rester dans l’ombre et observer", "weights": { "Elementaliste": 0, "Alchimiste": 1, "Ombromancien": 2, "Chronomancien": 0 } },
+      { "id": "D", "text": "Laisser une trace durable dans le temps", "weights": { "Elementaliste": 1, "Alchimiste": 0, "Ombromancien": 0, "Chronomancien": 2 } }
+    ]
+  }
+]

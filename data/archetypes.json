@@ -1,0 +1,46 @@
+{
+  "Elementaliste": {
+    "name": "Élémentaliste",
+    "description": "Impétueux·se, instinctif·ve, force de la nature.",
+    "strengths": ["Réactivité", "Énergie", "Courage"],
+    "weaknesses": ["Impulsivité", "Impatience"],
+    "tips": ["Compter jusqu’à 3 avant d’agir", "Canaliser l’élan dans des rituels"],
+    "badges": [
+      { "icon": "flame", "label": "Flamme Vive", "unlocked": true },
+      { "icon": "water", "label": "Vague Libre", "unlocked": false }
+    ]
+  },
+  "Alchimiste": {
+    "name": "Alchimiste",
+    "description": "Curieux·se, méthodique, passionné·e de savoirs et de transformations.",
+    "strengths": ["Logique", "Précision", "Créativité"],
+    "weaknesses": ["Perfectionnisme", "Doute"],
+    "tips": ["Accepter l’imprévu", "Partager ses trouvailles"],
+    "badges": [
+      { "icon": "flask", "label": "Alchimie Pure", "unlocked": true },
+      { "icon": "leaf", "label": "Herboriste", "unlocked": false }
+    ]
+  },
+  "Ombromancien": {
+    "name": "Ombromancien",
+    "description": "Discret·e, intuitif·ve, stratège de l’ombre.",
+    "strengths": ["Observation", "Anticipation", "Adaptabilité"],
+    "weaknesses": ["Réservé·e", "Difficulté à s’exprimer"],
+    "tips": ["Oser prendre la parole", "Faire confiance à l’équipe"],
+    "badges": [
+      { "icon": "moon", "label": "Ombre Sage", "unlocked": true },
+      { "icon": "eye", "label": "Visionnaire", "unlocked": false }
+    ]
+  },
+  "Chronomancien": {
+    "name": "Chronomancien",
+    "description": "Patient·e, organisé·e, maître du temps et des cycles.",
+    "strengths": ["Planification", "Patience", "Gestion du temps"],
+    "weaknesses": ["Lenteur", "Rigidité"],
+    "tips": ["S’autoriser à improviser", "Accepter l’incertitude"],
+    "badges": [
+      { "icon": "hourglass", "label": "Maître du Temps", "unlocked": true },
+      { "icon": "calendar", "label": "Gardien des Cycles", "unlocked": false }
+    ]
+  }
+}

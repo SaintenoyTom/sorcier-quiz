@@ -1,0 +1,189 @@
+# Workflow CI/CD complet pour React Native + Docker + Sonar + Detox
+# Exécuté sur pull_request et push vers main/tag
+# Utilise Node LTS, cache npm/yarn/gradle, artefacts, Quality Gate, déploiement conditionnel
+# Secrets attendus :
+# - SONAR_TOKEN, SONAR_HOST_URL (ou SonarCloud: SONAR_TOKEN, SONAR_ORGANIZATION, SONAR_PROJECT_KEY)
+# - REGISTRY_URL, REGISTRY_USERNAME, REGISTRY_PASSWORD (push image)
+# - KUBE_CONFIG, SSH_PRIVATE_KEY, FIREBASE_TOKEN (déploiement, exemples)
+
+name: CI/CD
+on:
+  push:
+    branches: [main]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint (Airbnb)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint (Airbnb)
+        run: npm run lint
+      - name: Résumé Lint
+        run: echo "## Résultat Lint" >> $GITHUB_STEP_SUMMARY
+
+  unit_tests:
+    name: Tests unitaires (Jest)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run unit tests
+        run: npm run test
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+      - name: Résumé Tests
+        run: echo "## Couverture Jest" >> $GITHUB_STEP_SUMMARY
+
+  e2e_tests:
+    name: E2E Tests (Detox)
+    runs-on: ubuntu-latest
+    needs: unit_tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Setup Java (Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install Android SDK
+        run: |
+          sudo apt-get update && sudo apt-get install -y wget unzip
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip -d $HOME/android-sdk
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/bin
+          yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --licenses
+          $ANDROID_HOME/cmdline-tools/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "emulator" "system-images;android-30;google_apis;x86_64"
+          echo "no" | $ANDROID_HOME/cmdline-tools/bin/avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" --device "pixel"
+      - name: Build E2E (Detox)
+        run: npm run e2e:build
+      - name: Run E2E (Detox)
+        run: npm run e2e
+      - name: Upload Detox/adb logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detox-logs
+          path: e2e/logs/
+      - name: Résumé E2E
+        run: echo "## Résultat Detox" >> $GITHUB_STEP_SUMMARY
+
+  docker_test:
+    name: Docker Build & Healthcheck
+    runs-on: ubuntu-latest
+    needs: unit_tests
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker build
+        run: |
+          docker build -t ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:${{ github.sha }} .
+      - name: Healthcheck
+        run: |
+          docker run --rm -p 3000:3000 ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:${{ github.sha }} npm run healthcheck
+      - name: Résumé Docker
+        run: echo "## Docker Healthcheck" >> $GITHUB_STEP_SUMMARY
+
+  build:
+    name: Build RN Bundle
+    runs-on: ubuntu-latest
+    needs: [unit_tests, docker_test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - run: npm ci
+      - name: Build Android Bundle
+        run: npm run bundle:android
+      - name: Upload Android Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-bundle
+          path: android/app/build/outputs/bundle/release/app-release.aab
+      - name: Résumé Build
+        run: echo "## Build Android" >> $GITHUB_STEP_SUMMARY
+
+  sonar:
+    name: Analyse SonarQube/SonarCloud
+    runs-on: ubuntu-latest
+    needs: [unit_tests, build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - run: npm ci
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          npm run sonar
+      - name: Résumé Sonar
+        run: echo "## SonarQube Quality Gate" >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    name: Déploiement (conditionnel)
+    runs-on: ubuntu-latest
+    needs: [lint, unit_tests, e2e_tests, docker_test, build, sonar]
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # Option A: Registry + K8s
+      - name: Login Registry
+        if: secrets.REGISTRY_USERNAME && secrets.REGISTRY_PASSWORD
+        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+      - name: Push Docker Image
+        run: |
+          docker tag ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:${{ github.sha }} ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:latest
+          docker push ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:latest
+      - name: Deploy K8s
+        if: secrets.KUBE_CONFIG
+        run: |
+          echo "$KUBE_CONFIG" > kubeconfig.yaml
+          kubectl --kubeconfig=kubeconfig.yaml apply -f k8s/deployment.yaml
+      # Option B: Firebase App Distribution
+      - name: Deploy Firebase
+        if: secrets.FIREBASE_TOKEN
+        run: |
+          firebase appdistribution:distribute android/app/build/outputs/bundle/release/app-release.aab --app <APP_ID> --token ${{ secrets.FIREBASE_TOKEN }}
+      # Option C: SSH/VM
+      - name: Deploy via SSH
+        if: secrets.SSH_PRIVATE_KEY
+        run: |
+          echo "$SSH_PRIVATE_KEY" > key.pem
+          chmod 600 key.pem
+          scp -i key.pem android/app/build/outputs/bundle/release/app-release.aab user@host:/deploy/path/
+          ssh -i key.pem user@host 'docker restart my-app'
+      - name: Résumé Déploiement
+        run: echo "## Déploiement terminé" >> $GITHUB_STEP_SUMMARY
