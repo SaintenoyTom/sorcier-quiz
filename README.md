@@ -25,14 +25,14 @@ npm install
 
 ### Lancer sur Android/iOS
 ```sh
-# Android (émulateur ou appareil)
-npx expo run:android
 
-# iOS (Mac requis, ou Expo Go)
-npx expo run:ios
+# Android (Expo Go ou APK via EAS)
+npx expo start # Expo Go
+npx eas build --platform android --profile preview # Génère un APK
 
-# Expo Go (Android/iOS)
-npx expo start
+# iOS (Expo Go ou EAS)
+npx expo start # Expo Go
+npx eas build --platform ios --profile preview # Génère un IPA
 ```
 
 ## Structure du projet

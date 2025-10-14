@@ -74,13 +74,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-      - name: Générer projet natif Expo
-        run: npx expo prebuild
-      - name: Générer APK Android (Gradle)
-        run: |
-          cd android
-          ./gradlew assembleRelease
-          cd ..
+      - name: Build APK (Expo EAS)
+        run: npx eas build --platform android --profile preview --non-interactive
           # Copie l'APK généré vers app-release.apk
           find android/app/build/outputs/apk/release -name '*.apk' -exec cp {} app-release.apk \;
       - name: Setup Java (Android)
