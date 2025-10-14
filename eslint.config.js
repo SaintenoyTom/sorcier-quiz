@@ -10,7 +10,8 @@ module.exports = [
       'ios/'
     ],
     plugins: {
-      '@typescript-eslint': require('@typescript-eslint/eslint-plugin')
+      '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      'react': require('eslint-plugin-react')
     },
     languageOptions: {
       parser: require('@typescript-eslint/parser'),
