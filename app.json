@@ -22,7 +22,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "package": "com.saintenoytom.sorcierquiz"
     },
     "web": {
       "favicon": "./assets/favicon.png"
