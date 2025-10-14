@@ -74,11 +74,9 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-      - name: Install Expo CLI
-        run: npm install -g expo-cli
-      - name: Générer APK Expo (expo run:android)
+      - name: Générer APK Expo (npx expo run:android)
         run: |
-          expo run:android --variant release
+          npx expo run:android --variant release
           # Copie l'APK généré vers app-release.apk
           find . -name '*.apk' -exec cp {} app-release.apk \;
       - name: Setup Java (Android)
