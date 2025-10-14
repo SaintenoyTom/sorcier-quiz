@@ -7,7 +7,9 @@ module.exports = [
       'dist/',
       'coverage/',
       'android/',
-      'ios/'
+      'ios/',
+      '*.config.js',
+      'coverage/**/*.js'
     ],
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
