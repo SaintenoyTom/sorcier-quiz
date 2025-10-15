@@ -230,7 +230,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      # Déploiement via Firebase App Distribution
+      # Déploiement via Firebase App Distribution.
       # Remplacez <APP_ID> par l'identifiant de votre app Firebase
       - name: Download Android bundle artifact
         uses: actions/download-artifact@v4
