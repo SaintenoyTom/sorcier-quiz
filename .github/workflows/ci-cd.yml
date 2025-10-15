@@ -109,7 +109,7 @@ jobs:
           echo "Starting react-native bundle to produce index.android.bundle and assets"
           npx react-native bundle --platform android --dev false --entry-file index.ts --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ || true
 
-      - name: Build Android Bundle (Gradle)
+      - name: Prepare Android build (decode keystore, env)
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -123,7 +123,6 @@ jobs:
           export CI=true
           export TERM=dumb
           cd android
-          SIGNING_ARGS=""
           if [ -n "$ANDROID_KEYSTORE" ]; then
             echo "Decoding keystore from secret..."
             echo "$ANDROID_KEYSTORE" | base64 --decode > app/upload-keystore.jks
@@ -131,39 +130,43 @@ jobs:
             if [ -z "$ANDROID_KEYSTORE_PASSWORD" ] || [ -z "$ANDROID_KEY_ALIAS" ] || [ -z "$ANDROID_KEY_PASSWORD" ]; then
               echo "One of ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS or ANDROID_KEY_PASSWORD is missing. Ensure all are set as repository secrets." && exit 1
             fi
-            SIGNING_ARGS="-Pandroid.injected.signing.store.file=app/upload-keystore.jks -Pandroid.injected.signing.store.password=$ANDROID_KEYSTORE_PASSWORD -Pandroid.injected.signing.key.alias=$ANDROID_KEY_ALIAS -Pandroid.injected.signing.key.password=$ANDROID_KEY_PASSWORD"
           else
             echo "No Android keystore provided via secrets; building unsigned AAB."
           fi
-          echo "Running gradle bundleRelease with signing args: $SIGNING_ARGS"
           # Ensure gradlew is executable on Linux runners
           if [ -f "gradlew" ]; then
             chmod +x gradlew || true
           fi
           # Ensure google-services.json exists and contains a client for the app package.
-          # If the file is missing (common in CI when Firebase config isn't committed),
-          # create a minimal placeholder so the google-services Gradle task doesn't fail.
           if [ ! -f "app/google-services.json" ]; then
             echo "android/app/google-services.json not found — creating a minimal placeholder"
             echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.saintenoytom.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > app/google-services.json
           fi
-          # First, run the Gradle task that creates the JS bundle and assets for each variant.
-          # This ensures Gradle's internal tasks run in the expected order and produce required artifacts.
-          if [ -n "$SIGNING_ARGS" ]; then
-            echo "Running createBundleReleaseJsAndAssets (Gradle) with signing args: $SIGNING_ARGS"
-            ./gradlew -p android :app:createBundleReleaseJsAndAssets --no-daemon $SIGNING_ARGS --stacktrace
-          else
-            echo "Running createBundleReleaseJsAndAssets (Gradle)"
-            ./gradlew -p android :app:createBundleReleaseJsAndAssets --no-daemon --stacktrace
-          fi
 
-          # Then build the Android App Bundle (AAB)
+      - name: Build JS bundle (Hermes) d'abord
+        working-directory: android
+        env:
+          NODE_ENV: production
+          CI: 'true'
+          TERM: dumb
+        run: |
+          ./gradlew :app:createBundleReleaseJsAndAssets --no-daemon --stacktrace
+
+      - name: Build Android App Bundle (.aab)
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          SIGNING_ARGS=""
+          if [ -f "app/upload-keystore.jks" ] && [ -n "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" ]; then
+            SIGNING_ARGS="-Pandroid.injected.signing.store.file=app/upload-keystore.jks -Pandroid.injected.signing.store.password=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ANDROID_KEY_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.ANDROID_KEY_PASSWORD }}"
+          fi
           if [ -n "$SIGNING_ARGS" ]; then
-            echo "Running bundleRelease (Gradle) with signing args: $SIGNING_ARGS"
-            ./gradlew -p android :app:bundleRelease --no-daemon $SIGNING_ARGS --stacktrace
+            ./gradlew :app:bundleRelease $SIGNING_ARGS --no-daemon --stacktrace
           else
-            echo "Running bundleRelease (Gradle)"
-            ./gradlew -p android :app:bundleRelease --no-daemon --stacktrace
+            ./gradlew :app:bundleRelease --no-daemon --stacktrace
           fi
       - name: Upload Android Bundle
         uses: actions/upload-artifact@v4
