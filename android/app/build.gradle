@@ -182,3 +182,19 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+// Ensure proper task ordering: make map*SourceSetPaths depend on createBundle*JsAndAssets
+// This avoids race conditions where resource mapping runs before the JS bundle is created.
+if (!project.ext.has('mapSourceSetPathsHookApplied')) {
+    project.ext.mapSourceSetPathsHookApplied = true
+    afterEvaluate {
+        tasks.matching { it.name ==~ /map.*SourceSetPaths/ }.configureEach { mapTask ->
+            def variantName = (mapTask.name - 'map' - 'SourceSetPaths')
+            def bundleTaskName = "createBundle${variantName}JsAndAssets"
+            def bundleTask = tasks.findByName(bundleTaskName)
+            if (bundleTask != null && !mapTask.getDependsOn().contains(bundleTask)) {
+                mapTask.dependsOn(bundleTask)
+            }
+        }
+    }
+}

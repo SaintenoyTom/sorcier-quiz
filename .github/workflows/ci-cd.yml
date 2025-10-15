@@ -147,14 +147,23 @@ jobs:
             echo "android/app/google-services.json not found — creating a minimal placeholder"
             echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.saintenoytom.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > app/google-services.json
           fi
-          # Disable Hermes during CI build so the prebundled JS (index.android.bundle)
-          # produced by `npx react-native bundle` can be used directly (Hermes requires
-          # a different compile step). Also skip Gradle's bundling task which invokes
-          # the Expo CLI bundler; we already prebundled assets above.
+          # First, run the Gradle task that creates the JS bundle and assets for each variant.
+          # This ensures Gradle's internal tasks run in the expected order and produce required artifacts.
           if [ -n "$SIGNING_ARGS" ]; then
-            ./gradlew -PhermesEnabled=false bundleRelease $SIGNING_ARGS -x :app:createBundleReleaseJsAndAssets --stacktrace
+            echo "Running createBundleReleaseJsAndAssets (Gradle) with signing args: $SIGNING_ARGS"
+            ./gradlew -p android :app:createBundleReleaseJsAndAssets --no-daemon $SIGNING_ARGS --stacktrace
           else
-            ./gradlew -PhermesEnabled=false bundleRelease -x :app:createBundleReleaseJsAndAssets --stacktrace
+            echo "Running createBundleReleaseJsAndAssets (Gradle)"
+            ./gradlew -p android :app:createBundleReleaseJsAndAssets --no-daemon --stacktrace
+          fi
+
+          # Then build the Android App Bundle (AAB)
+          if [ -n "$SIGNING_ARGS" ]; then
+            echo "Running bundleRelease (Gradle) with signing args: $SIGNING_ARGS"
+            ./gradlew -p android :app:bundleRelease --no-daemon $SIGNING_ARGS --stacktrace
+          else
+            echo "Running bundleRelease (Gradle)"
+            ./gradlew -p android :app:bundleRelease --no-daemon --stacktrace
           fi
       - name: Upload Android Bundle
         uses: actions/upload-artifact@v4
