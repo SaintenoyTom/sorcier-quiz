@@ -109,7 +109,7 @@ jobs:
           echo "Starting react-native bundle to produce index.android.bundle and assets"
           npx react-native bundle --platform android --dev false --entry-file index.ts --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ || true
 
-      - name: Prepare Android build (decode keystore, env)
+      - name: Prepare Android build (decode keystore to workspace, env)
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -122,11 +122,13 @@ jobs:
           # Mark CI environment and disable fancy terminal output to avoid corrupting Metro's JSON
           export CI=true
           export TERM=dumb
-          cd android
+          # Create destination path (absolute) and write keystore here so ANDROID_STORE_FILE can point to it
+          DEST="${{ github.workspace }}/android/app/upload-keystore.jks"
+          mkdir -p "${{ github.workspace }}/android/app"
           if [ -n "$ANDROID_KEYSTORE" ]; then
-            echo "Decoding keystore from secret..."
-            echo "$ANDROID_KEYSTORE" | base64 --decode > app/upload-keystore.jks
-            echo "Keystore written to android/app/upload-keystore.jks"
+            echo "Decoding keystore from secret to $DEST"
+            echo "$ANDROID_KEYSTORE" | base64 --decode > "$DEST"
+            ls -la "${{ github.workspace }}/android/app"
             if [ -z "$ANDROID_KEYSTORE_PASSWORD" ] || [ -z "$ANDROID_KEY_ALIAS" ] || [ -z "$ANDROID_KEY_PASSWORD" ]; then
               echo "One of ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS or ANDROID_KEY_PASSWORD is missing. Ensure all are set as repository secrets." && exit 1
             fi
@@ -134,14 +136,18 @@ jobs:
             echo "No Android keystore provided via secrets; building unsigned AAB."
           fi
           # Ensure gradlew is executable on Linux runners
-          if [ -f "gradlew" ]; then
-            chmod +x gradlew || true
+          if [ -f "android/gradlew" ]; then
+            chmod +x android/gradlew || true
           fi
           # Ensure google-services.json exists and contains a client for the app package.
-          if [ ! -f "app/google-services.json" ]; then
+          if [ ! -f "android/app/google-services.json" ]; then
             echo "android/app/google-services.json not found — creating a minimal placeholder"
-            echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.saintenoytom.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > app/google-services.json
+            echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.saintenoytom.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > android/app/google-services.json
           fi
+
+      - name: Verify keystore presence
+        run: |
+          test -f "${{ github.workspace }}/android/app/upload-keystore.jks" || { echo "Keystore manquant: ${{ github.workspace }}/android/app/upload-keystore.jks"; exit 1; }
 
       - name: Build JS bundle (Hermes) d'abord
         working-directory: android
@@ -155,19 +161,21 @@ jobs:
       - name: Build Android App Bundle (.aab)
         working-directory: android
         env:
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_STORE_FILE: ${{ github.workspace }}/android/app/upload-keystore.jks
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          SIGNING_ARGS=""
-          if [ -f "app/upload-keystore.jks" ] && [ -n "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" ]; then
-            SIGNING_ARGS="-Pandroid.injected.signing.store.file=app/upload-keystore.jks -Pandroid.injected.signing.store.password=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ANDROID_KEY_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.ANDROID_KEY_PASSWORD }}"
-          fi
-          if [ -n "$SIGNING_ARGS" ]; then
-            ./gradlew :app:bundleRelease $SIGNING_ARGS --no-daemon --stacktrace
-          else
-            ./gradlew :app:bundleRelease --no-daemon --stacktrace
-          fi
+          # Option A: Use signingConfigs.release which reads ANDROID_STORE_FILE/ANDROID_STORE_PASSWORD etc.
+          ./gradlew :app:bundleRelease --no-daemon --stacktrace
+
+          # Option B (alternative, if you prefer passing -P flags):
+          # ./gradlew :app:bundleRelease \
+          #   -Pandroid.injected.signing.store.file="${{ github.workspace }}/android/app/upload-keystore.jks" \
+          #   -Pandroid.injected.signing.store.password="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          #   -Pandroid.injected.signing.key.alias="${{ secrets.ANDROID_KEY_ALIAS }}" \
+          #   -Pandroid.injected.signing.key.password="${{ secrets.ANDROID_KEY_PASSWORD }}" \
+          #   --no-daemon --stacktrace
       - name: Upload Android Bundle
         uses: actions/upload-artifact@v4
         with:
