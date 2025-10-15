@@ -122,6 +122,10 @@ jobs:
             echo "No Android keystore provided via secrets; building unsigned AAB."
           fi
           echo "Running gradle bundleRelease with signing args: $SIGNING_ARGS"
+          # Ensure gradlew is executable on Linux runners
+          if [ -f "gradlew" ]; then
+            chmod +x gradlew || true
+          fi
           if [ -n "$SIGNING_ARGS" ]; then
             ./gradlew bundleRelease $SIGNING_ARGS
           else
