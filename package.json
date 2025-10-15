@@ -39,6 +39,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@react-native-community/cli": "latest",
     "@testing-library/jest-native": "^5.4.3",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.1.0",
