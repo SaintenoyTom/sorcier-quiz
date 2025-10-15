@@ -112,6 +112,11 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'npm'
+      - name: Setup Java 17 for Sonar
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
       - name: SonarQube Scan
@@ -119,6 +124,13 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
+          # Default to SonarCloud if SONAR_HOST_URL is not supplied
+          if [ -z "$SONAR_HOST_URL" ]; then
+            export SONAR_HOST_URL="https://sonarcloud.io"
+          fi
+          if [ -z "$SONAR_TOKEN" ]; then
+            echo "Warning: SONAR_TOKEN is not set. Authentication will fail for SonarCloud."
+          fi
           npm run sonar
       - name: Résumé Sonar
         run: echo "## SonarQube Quality Gate" >> $GITHUB_STEP_SUMMARY
