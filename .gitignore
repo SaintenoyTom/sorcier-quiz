@@ -37,5 +37,12 @@ yarn-error.*
 *.tsbuildinfo
 
 # generated native folders
+# iOS native folder (keep ignored unless you commit iOS)
 /ios
-/android
+
+# Android native folder is committed for CI builds (Option 1). Do not ignore /android.
+
+# Keep keystore and sensitive artifacts ignored
+android/app/*.jks
+keystore.b64
+keystore-info.json
