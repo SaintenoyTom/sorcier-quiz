@@ -145,33 +145,7 @@ jobs:
           # create a minimal placeholder so the google-services Gradle task doesn't fail.
           if [ ! -f "app/google-services.json" ]; then
             echo "android/app/google-services.json not found — creating a minimal placeholder"
-            cat > app/google-services.json <<'JSON'
-{
-  "project_info": {
-    "project_number": "000000000000",
-    "project_id": "placeholder",
-    "firebase_url": "https://placeholder.firebaseio.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
-        "android_client_info": {
-          "package_name": "com.saintenoytom.sorcierquiz"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
-}
-JSON
+            echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.saintenoytom.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > app/google-services.json
           fi
           # Disable Hermes during CI build so the prebundled JS (index.android.bundle)
           # produced by `npx react-native bundle` can be used directly (Hermes requires
