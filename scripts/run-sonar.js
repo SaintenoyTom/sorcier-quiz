@@ -9,7 +9,7 @@ const sonarToken = process.env.SONAR_TOKEN || '';
 
 const args = [];
 args.push(`-Dsonar.host.url=${sonarHost}`);
-if (sonarToken) args.push(`-Dsonar.login=${sonarToken}`);
+if (sonarToken) args.push(`-Dsonar.token=${sonarToken}`);
 
 // If organization/project are in sonar-project.properties, no need to pass them here.
 
