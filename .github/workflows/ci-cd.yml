@@ -110,6 +110,9 @@ jobs:
           set -e
           # Ensure Metro runs in production mode so the serializer returns the expected format
           export NODE_ENV=production
+          # Mark CI environment and disable fancy terminal output to avoid corrupting Metro's JSON
+          export CI=true
+          export TERM=dumb
           cd android
           SIGNING_ARGS=""
           if [ -n "$ANDROID_KEYSTORE" ]; then
@@ -129,9 +132,9 @@ jobs:
             chmod +x gradlew || true
           fi
           if [ -n "$SIGNING_ARGS" ]; then
-            ./gradlew bundleRelease $SIGNING_ARGS
+            ./gradlew bundleRelease $SIGNING_ARGS --stacktrace
           else
-            ./gradlew bundleRelease
+            ./gradlew bundleRelease --stacktrace
           fi
       - name: Upload Android Bundle
         uses: actions/upload-artifact@v4
