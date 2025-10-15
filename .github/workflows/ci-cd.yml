@@ -100,6 +100,15 @@ jobs:
                  "Run locally: npx expo prebuild --platform android && git add android && git commit -m 'Add android native project' && git push" \
                  "\nAlternatively, use EAS Build (option 2) instead of committing android/." && exit 1
           fi
+      - name: Prebundle JS for Android (create assets/bundle)
+        run: |
+          set -e
+          # Ensure assets folders exist
+          mkdir -p android/app/src/main/assets
+          mkdir -p android/app/src/main/res
+          echo "Starting react-native bundle to produce index.android.bundle and assets"
+          npx react-native bundle --platform android --dev false --entry-file index.ts --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/ || true
+
       - name: Build Android Bundle (Gradle)
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
