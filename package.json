@@ -14,7 +14,7 @@
     "e2e": "detox test -c android.emu.release --headless",
     "healthcheck": "node -e \"require('http').createServer((req, res) => { if (req.url === '/health') { res.end('ok') } else { res.end('not found') }}).listen(3000)\" & sleep 2 && curl -f http://localhost:3000/health",
     "build:android": "cd android && ./gradlew bundleRelease",
-    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/build/generated/assets/react/release/index.android.bundle --assets-dest android/app/src/main/res/",
+  "bundle:android": "react-native bundle --platform android --dev false --entry-file index.ts --bundle-output android/app/build/generated/assets/react/release/index.android.bundle --assets-dest android/app/src/main/res/",
     "sonar": "sonar-scanner"
   },
   "dependencies": {
