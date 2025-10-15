@@ -140,10 +140,14 @@ jobs:
           if [ -f "gradlew" ]; then
             chmod +x gradlew || true
           fi
+          # Disable Hermes during CI build so the prebundled JS (index.android.bundle)
+          # produced by `npx react-native bundle` can be used directly (Hermes requires
+          # a different compile step). Also skip Gradle's bundling task which invokes
+          # the Expo CLI bundler; we already prebundled assets above.
           if [ -n "$SIGNING_ARGS" ]; then
-            ./gradlew bundleRelease $SIGNING_ARGS --stacktrace
+            ./gradlew -PhermesEnabled=false bundleRelease $SIGNING_ARGS -x :app:createBundleReleaseJsAndAssets --stacktrace
           else
-            ./gradlew bundleRelease --stacktrace
+            ./gradlew -PhermesEnabled=false bundleRelease -x :app:createBundleReleaseJsAndAssets --stacktrace
           fi
       - name: Upload Android Bundle
         uses: actions/upload-artifact@v4
