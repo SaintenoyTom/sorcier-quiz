@@ -23,7 +23,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "googleServicesFile": "./google-services.json",
-      "package": "com.saintenoytom.sorcierquiz"
+      "package": "com.epsi.sorcierquiz"
     },
     "web": {
       "favicon": "./assets/favicon.png"

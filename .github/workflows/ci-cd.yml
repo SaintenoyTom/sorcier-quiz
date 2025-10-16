@@ -154,7 +154,7 @@ jobs:
           # Ensure google-services.json exists and contains a client for the app package.
           if [ ! -f "android/app/google-services.json" ]; then
             echo "android/app/google-services.json not found — creating a minimal placeholder"
-            echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.saintenoytom.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > android/app/google-services.json
+            echo '{"client":[{"client_info":{"android_client_info":{"package_name":"com.epsi.sorcierquiz"}}}],"project_info":{"project_id":"placeholder"},"configuration_version":"1"}' > android/app/google-services.json
           fi
 
       - name: Verify keystore presence

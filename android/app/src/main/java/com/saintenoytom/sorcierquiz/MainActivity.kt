@@ -1,4 +1,4 @@
-package com.saintenoytom.sorcierquiz
+package com.epsi.sorcierquiz
 
 import android.os.Build
 import android.os.Bundle
