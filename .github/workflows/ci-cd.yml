@@ -21,6 +21,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Android clean (optional)
+        if: ${{ hashFiles('android/gradlew') != '' }}
+        working-directory: android
+        run: |
+          chmod +x gradlew || true
+          ./gradlew clean
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
