@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.saintenoytom.sorcierquiz'
+    namespace 'com.epsi.sorcierquiz'
     defaultConfig {
-        applicationId 'com.saintenoytom.sorcierquiz'
+        applicationId 'com.epsi.sorcierquiz'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
